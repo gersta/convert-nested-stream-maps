@@ -12,7 +12,6 @@ public class ConvertMapStreamToPojo {
     @Builder
     static class Person {
         private String firstname;
-        private String lastname;
         private int age;
         private String homeCountry;
     }
@@ -20,7 +19,6 @@ public class ConvertMapStreamToPojo {
     @Data
     static class Grouping {
         private String firstname;
-        private String lastname;
         private int age;
         private String homeCountry;
 
@@ -30,34 +28,29 @@ public class ConvertMapStreamToPojo {
     public static void main(String[] args) {
         Person gerrit = Person.builder()
                 .firstname("gerrit")
-                .lastname("sta")
                 .age(24)
                 .homeCountry("germany")
                 .build();
 
-        Person johnDoe = Person.builder()
-                .firstname("John")
-                .lastname("Doe")
-                .age(25)
-                .homeCountry("USA")
+        Person anotherGerrit = Person.builder()
+                .firstname("gerrit")
+                .age(24)
+                .homeCountry("germany")
                 .build();
 
         Person janeDoe = Person.builder()
                 .firstname("Jane")
-                .lastname("Doe")
                 .age(25)
                 .homeCountry("USA")
                 .build();
 
-        List<Person> persons = Arrays.asList(gerrit, johnDoe, janeDoe);
+        List<Person> persons = Arrays.asList(gerrit, anotherGerrit, janeDoe);
 
-        Map<String, Map<String, Map<Integer, Map<String, List<Person>>>>> grouping = persons.stream()
+        Map<String, Map<Integer, Map<String, List<Person>>>> nestedGroupings = persons.stream()
                 .collect(
                         Collectors.groupingBy(Person::getFirstname,
-                                Collectors.groupingBy(Person::getLastname,
-                                        Collectors.groupingBy(Person::getAge,
-                                                Collectors.groupingBy(Person::getHomeCountry)
-                                        )
+                                Collectors.groupingBy(Person::getAge,
+                                        Collectors.groupingBy(Person::getHomeCountry)
                                 )
                         )
                 );
